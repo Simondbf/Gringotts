@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .hide-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}
+
+.theme-80s {
+  --bg-app: #120e24;
+  --bg-card: #20183b;
+  --text-main: #f0f0ff;
+  --text-muted: #a098d0;
+  --accent: #ff00ff;
+  --accent-hover: #ff40ff;
+  --border-light: #3e287a;
+  
+  background-color: var(--bg-app) !important;
+  color: var(--text-main) !important;
+  font-family: "Courier New", Courier, monospace !important;
+}
+
+.theme-80s * {
+  border-color: var(--border-light) !important;
+}
+
+.theme-80s header, .theme-80s nav, .theme-80s .bg-white {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+.theme-80s input, .theme-80s textarea {
+  background-color: var(--bg-app) !important;
+  color: var(--accent) !important;
+}
+
+.theme-80s .bg-gray-50, .theme-80s .bg-[#F5F5F3] {
+  background-color: var(--bg-app) !important;
+}
+
+.theme-80s p, .theme-80s span:not(.text-white), .theme-80s .text-gray-500, .theme-80s .text-gray-900, .theme-80s .text-gray-400 {
+  color: var(--text-main) !important;
+}
+
+.theme-80s .text-gray-500 {
+  color: var(--text-muted) !important;
+}
+
+.theme-80s .bg-emerald-600 {
+  background-color: var(--accent) !important;
+  box-shadow: 0 0 10px var(--accent);
+}
+.theme-80s .bg-emerald-600:hover {
+  background-color: var(--accent-hover) !important;
+}
+.theme-80s .text-emerald-600 {
+  color: var(--accent) !important;
+}
+.theme-80s button {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
