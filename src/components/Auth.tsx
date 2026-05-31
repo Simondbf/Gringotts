@@ -9,19 +9,17 @@ export default function Auth() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [isResetPassword, setIsResetPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const [message, setMessage] = useState<{text: string, type: 'error'|'success'} | null>(null);
-
-  useEffect(() => {
-    localStorage.setItem('gringotts-remember-me', rememberMe.toString());
-  }, [rememberMe]);
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!supabase) {
+      setMessage({ text: 'Erreur de configuration base de données', type: 'error' });
+      return;
+    }
+    
     setLoading(true);
     setMessage(null);
-    
-    if (!supabase) return;
 
     try {
       if (isResetPassword) {
@@ -110,21 +108,7 @@ export default function Auth() {
             )}
 
             {!isResetPassword && (
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                    id="remember-me"
-                    name="remember-me"
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                    Se souvenir de moi
-                  </label>
-                </div>
-
+              <div className="flex items-center justify-end">
                 <div className="text-sm">
                   <button type="button" onClick={() => setIsResetPassword(true)} className="font-medium text-emerald-600 hover:text-emerald-500">
                     Mot de passe oublié ?

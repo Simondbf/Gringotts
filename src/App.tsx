@@ -93,19 +93,22 @@ export default function App() {
   // Synchro initiale Supabase au chargement
   useEffect(() => {
     const loadFromSupabase = async () => {
-      // Charge les données depuis Supabase
       if (!supabase || !session?.user) return;
-      const { data, error } = await supabase.from('media_items').select('*').order('dateAdded', { ascending: false });
-      if (!error && data) {
-        setItems(data);
-        localStorage.setItem('gringotts-data', JSON.stringify(data));
+      try {
+        const { data, error } = await supabase.from('media_items').select('*').order('dateAdded', { ascending: false });
+        if (error) throw error;
+        if (data) {
+          setItems(data);
+          localStorage.setItem('gringotts-data', JSON.stringify(data));
+        }
+      } catch (err) {
+        console.error('Erreur lors du chargement des données:', err);
       }
     };
     
     loadFromSupabase();
   }, [session]);
 
-  // Synchro locale
   useEffect(() => {
     localStorage.setItem('gringotts-data', JSON.stringify(items));
   }, [items]);
@@ -140,23 +143,49 @@ export default function App() {
 
     // Envoi en fond sur Supabase
     if (supabase) {
-      await supabase.from('media_items').insert([newMedia]);
+      try {
+        const { error } = await supabase.from('media_items').insert([newMedia]);
+        if (error) throw error;
+      } catch (error) {
+        console.error('Erreur lors de l\'ajout:', error);
+        // Rollback
+        setItems((prev) => prev.filter(item => item.id !== newMedia.id));
+        alert('Erreur: impossible d\'ajouter l\'élément.');
+      }
     }
   };
 
   const updateItem = async (id: string, updates: Partial<MediaItem>) => {
+    const previousItems = [...items];
     setItems((prev) => prev.map(item => item.id === id ? { ...item, ...updates } : item));
     
     if (supabase) {
-      await supabase.from('media_items').update(updates).eq('id', id);
+      try {
+        const { error } = await supabase.from('media_items').update(updates).eq('id', id);
+        if (error) throw error;
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour:', error);
+        // Rollback
+        setItems(previousItems);
+        alert('Erreur: impossible de mettre à jour l\'élément.');
+      }
     }
   };
 
   const deleteItem = async (id: string) => {
+    const previousItems = [...items];
     setItems((prev) => prev.filter(item => item.id !== id));
     
     if (supabase) {
-      await supabase.from('media_items').delete().eq('id', id);
+      try {
+        const { error } = await supabase.from('media_items').delete().eq('id', id);
+        if (error) throw error;
+      } catch (error) {
+        console.error('Erreur lors de la suppression:', error);
+        // Rollback
+        setItems(previousItems);
+        alert('Erreur: impossible de supprimer l\'élément.');
+      }
     }
   };
 

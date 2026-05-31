@@ -115,7 +115,7 @@ export default function MediaCard({ item, onUpdate, onDelete }: MediaCardProps) 
                 </button>
                 {item.type === 'movie' && (
                   <a
-                    href={`https://cineprive.app/search?q=${encodeURIComponent(item.title)}`}
+                    href={`https://cineprive.rpisimon.uk/search?q=${encodeURIComponent(item.title)}`}
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-1 px-2 py-1.5 rounded text-xs font-semibold bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition-colors"
