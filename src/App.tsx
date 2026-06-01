@@ -189,6 +189,14 @@ export default function App() {
     }
   };
 
+  const handleSignOut = async () => {
+    if (supabase) {
+      await supabase.auth.signOut();
+      window.localStorage.removeItem('gringotts-data');
+      window.location.reload(); // Force le nettoyage total
+    }
+  };
+
   const filteredItems = items.filter(item => {
     const matchesTab = activeTab === 'all' || item.type === activeTab;
     const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -236,7 +244,7 @@ export default function App() {
               Scanner
             </button>
             <button
-              onClick={() => supabase?.auth.signOut()}
+              onClick={handleSignOut}
               className="p-2 text-gray-400 hover:text-red-600 rounded-full hover:bg-red-50 transition-colors"
               title="Se déconnecter"
             >
@@ -381,7 +389,7 @@ export default function App() {
             </button>
             
             <button
-              onClick={() => supabase?.auth.signOut()}
+              onClick={handleSignOut}
               className="flex flex-col items-center justify-center w-full h-full text-gray-500 hover:text-red-600 transition-colors"
             >
               <LogOut className="h-6 w-6 mb-1" />
