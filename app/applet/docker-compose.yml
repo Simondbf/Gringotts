@@ -7,7 +7,6 @@ services:
     container_name: gringotts
     restart: unless-stopped
     ports:
-      # On expose sur le port 3001 de ton serveur (pour ne pas interférer avec CinePrivé qui est sûrement sur le 3000)
       - "127.0.0.1:3001:80"
     env_file:
       - .env
